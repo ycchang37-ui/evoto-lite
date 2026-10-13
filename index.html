@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>EvotoLite - 쉬운 리퀴파이 & 인물·색감 올인원 보정 스튜디오</title>
+  <meta name="theme-color" content="#0f1116">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="이보토 스타일 인물 피부·주름·치아·머리볼륨 보정, 슬라이더·터치 리퀴파이, 보정 수치 복사/붙여넣기 및 일괄 동기화, 30종 프리셋, 디헤이즈, 필름 그레인, JPEG 내보내기를 지원하는 스마트폰·PC 보정 앱">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230f1116'/><circle cx='50' cy='50' r='34' stroke='%23ff7a59' stroke-width='7' fill='none'/><circle cx='50' cy='50' r='15' fill='%23ff7a59'/><circle cx='65' cy='35' r='6' fill='%23ffd166'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- 상단 헤더 바 -->
+    <header class="top-header" role="banner">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="24" height="24">
+            <rect width="32" height="32" rx="8" fill="#1c202b"/>
+            <circle cx="16" cy="16" r="10" stroke="#ff7a59" stroke-width="2.5" fill="none"/>
+            <circle cx="16" cy="16" r="4.5" fill="#ff7a59"/>
+            <circle cx="21" cy="11" r="2" fill="#ffd166"/>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1 class="brand-name">EvotoLite</h1>
+          <span class="brand-sub">이보토 스타일 인물·리퀴파이·색감 스튜디오</span>
+        </div>
+      </div>
+
+      <!-- 핵심: 이보토 스타일 보정 수치 복사 / 붙여넣기 / 일괄 동기화 바 -->
+      <div class="sync-action-bar" role="group" aria-label="보정 수치 복사 및 붙여넣기">
+        <button id="btn-copy-settings" type="button" class="btn btn-sync" title="현재 사진의 인물·리퀴파이·색감 보정 수치를 복사합니다 (Ctrl+C)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          <span>수치 복사</span>
+        </button>
+        <button id="btn-paste-settings" type="button" class="btn btn-sync" disabled title="복사해 둔 보정 수치를 현재 사진에 그대로 붙여넣습니다 (Ctrl+V)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
+          <span>붙여넣기</span>
+        </button>
+        <button id="btn-sync-all-photos" type="button" class="btn btn-sync hide-sm" title="현재 보정 수치를 아래 목록의 모든 사진에 한 번에 똑같이 적용합니다">
+          <span>전체 사진 동기화</span>
+        </button>
+        <button id="btn-copy-options" type="button" class="btn btn-ghost btn-icon-only" title="복사할 항목 선택 및 텍스트 코드로 공유하기" aria-label="복사 옵션 및 수치 코드 창 열기">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <label for="file-upload-input" class="btn btn-secondary" title="내 스마트폰이나 컴퓨터에서 사진 여러 장 불러오기">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
+          <span>사진 추가</span>
+        </label>
+        <input id="file-upload-input" type="file" accept="image/*" multiple class="sr-only">
+
+        <button id="btn-mobile-guide" type="button" class="btn btn-ghost" title="스마트폰 연결 및 앱 설치 방법">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+          <span class="hide-md">폰 연결</span>
+        </button>
+
+        <button id="btn-export-open" type="button" class="btn btn-primary" title="보정한 사진을 JPEG 파일로 저장하기">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          <span>JPEG 저장</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 메인 워크스페이스 (캔버스 뷰포트 + 컨트롤 독) -->
+    <main class="workspace">
+      <!-- 사진 미리보기 & 하단 필름스트립 영역 -->
+      <section class="canvas-stage" id="canvas-stage" aria-label="사진 편집 미리보기 영역">
+        <!-- 상단 플로팅 미니 툴바 (실행취소, 비교, 배율) -->
+        <div class="stage-floating-bar">
+          <div class="floating-group">
+            <button id="btn-undo" type="button" class="icon-pill" title="한 단계 취소 (Ctrl+Z)" disabled aria-label="한 단계 취소">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+              <span>취소</span>
+            </button>
+            <button id="btn-redo" type="button" class="icon-pill" title="다시 실행 (Ctrl+Y)" disabled aria-label="다시 실행">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
+            </button>
+            <button id="btn-reset-all" type="button" class="icon-pill" title="현재 사진의 모든 보정을 처음 상태로 초기화">
+              <span>초기화</span>
+            </button>
+          </div>
+
+          <div class="floating-group">
+            <button id="btn-split-compare" type="button" class="icon-pill" aria-pressed="false" title="화면을 반으로 나누어 보정 전과 후 비교하기">
+              <span>반반 비교</span>
+            </button>
+            <button id="btn-hold-original" type="button" class="icon-pill" title="누르고 있는 동안 원본 사진 보기 (스페이스바)">
+              <span>원본 보기</span>
+            </button>
+            <button id="btn-zoom-fit" type="button" class="icon-pill" title="화면 크기에 사진 맞추기">
+              <span id="zoom-readout">100%</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 캔버스 래퍼 -->
+        <div class="canvas-viewport" id="canvas-viewport">
+          <div class="canvas-transform-layer" id="canvas-transform-layer">
+            <!-- 보정 후 메인 캔버스 -->
+            <canvas id="editor-canvas" width="900" height="1125"></canvas>
+            <!-- 반반 비교용 원본 오버레이 캔버스 -->
+            <canvas id="before-canvas" class="before-canvas hidden" width="900" height="1125"></canvas>
+            <!-- 리퀴파이 격자(그리드) 및 가이드 표시용 오버레이 캔버스 -->
+            <canvas id="overlay-canvas" class="overlay-canvas" width="900" height="1125"></canvas>
+
+            <!-- 반반 비교 슬라이더 핸들 -->
+            <div id="split-divider" class="split-divider hidden" style="left: 50%;">
+              <div class="split-line"></div>
+              <div class="split-handle" role="slider" aria-label="전후 비교 구분선" aria-valuemin="5" aria-valuemax="95" aria-valuenow="50" tabindex="0">
+                <span>전</span>
+                <span>후</span>
+              </div>
+            </div>
+
+            <!-- 이보토 스타일 스마트 리퀴파이 얼굴·체형 가이드 핸들 -->
+            <div id="face-guide-box" class="face-guide-box hidden">
+              <div class="face-guide-header">
+                <span>얼굴 중심 가이드 (드래그하여 얼굴에 맞추세요)</span>
+              </div>
+              <div class="face-oval-ring">
+                <span class="guide-dot eye-left" title="왼쪽 눈 위치"></span>
+                <span class="guide-dot eye-right" title="오른쪽 눈 위치"></span>
+                <span class="guide-dot nose-center" title="코 중심"></span>
+                <span class="guide-dot mouth-center" title="입술 위치"></span>
+                <span class="guide-dot chin-bottom" title="턱끝 V라인 기준점"></span>
+              </div>
+              <div class="face-guide-resize-handle" id="face-guide-resize" title="크기 조절">⤡</div>
+            </div>
+          </div>
+
+          <!-- 터치 브러시 미리보기 원 -->
+          <div id="brush-cursor" class="brush-cursor hidden" aria-hidden="true"></div>
+        </div>
+
+        <!-- 하단 상태 토스트 안내 -->
+        <div id="status-toast" class="status-toast" role="status" aria-live="polite">
+          이보토처럼 수치 복사·붙여넣기와 슬라이더 성형, 피부·배경·색감 보정을 바로 사용해 보세요.
+        </div>
+
+        <!-- 이보토 스타일 하단 다중 사진 필름스트립 (사진 여러 장 전환 & 보정 수치 복붙 테스트용) -->
+        <div class="filmstrip-bar" aria-label="사진 목록 및 샘플 전환">
+          <div id="filmstrip-list" class="filmstrip-list" role="list">
+            <!-- JS에서 샘플 3종 + 사용자가 추가한 사진 썸네일이 렌더링됩니다 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 보정 도구 패널 (PC: 우측 사이드바 / 스마트폰: 하단 시트) -->
+      <aside class="tools-dock" aria-label="사진 보정 도구 모음">
+        <!-- 6대 핵심 기능 탭 네비게이션 -->
+        <nav class="tool-tabs" role="tablist" aria-label="보정 카테고리 선택">
+          <button type="button" role="tab" id="tab-btn-beauty" class="tool-tab active" aria-selected="true" aria-controls="panel-beauty" data-tab="beauty">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            <span>피부·디테일</span>
+          </button>
+
+          <button type="button" role="tab" id="tab-btn-liquify-easy" class="tool-tab" aria-selected="false" aria-controls="panel-liquify-easy" data-tab="liquify-easy">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3h-6zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3v6zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6h6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6v-6z"/></svg>
+            <span>쉬운 리퀴파이</span>
+          </button>
+
+          <button type="button" role="tab" id="tab-btn-liquify-touch" class="tool-tab" aria-selected="false" aria-controls="panel-liquify-touch" data-tab="liquify-touch">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg>
+            <span>터치·잡티</span>
+          </button>
+
+          <button type="button" role="tab" id="tab-btn-presets" class="tool-tab" aria-selected="false" aria-controls="panel-presets" data-tab="presets">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            <span>프리셋(30)</span>
+          </button>
+
+          <button type="button" role="tab" id="tab-btn-color" class="tool-tab" aria-selected="false" aria-controls="panel-color" data-tab="color">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6c3.31 0 6 2.69 6 6s-2.69 6-6 6z"/></svg>
+            <span>색감·배경</span>
+          </button>
+
+          <button type="button" role="tab" id="tab-btn-effects" class="tool-tab" aria-selected="false" aria-controls="panel-effects" data-tab="effects">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
+            <span>디헤이즈·입자</span>
+          </button>
+        </nav>
+
+        <!-- 탭 본문 스크롤 영역 -->
+        <div class="tool-panels">
+          <!-- 탭 1: 이보토 핵심 인물 피부 · 주름 · 눈 · 치아 · 머리 볼륨 보정 -->
+          <section id="panel-beauty" role="tabpanel" aria-labelledby="tab-btn-beauty" class="tool-panel active">
+            <div class="panel-intro-card">
+              <div class="intro-header-inline">
+                <div>
+                  <h2 class="panel-title">이보토 인물 피부 · 주름 · 눈 · 헤어 보정</h2>
+                  <p class="panel-desc">피부 질감은 살리면서 다크서클, 팔자주름, 번들거림, 치아 미백, 정수리 뿌리 볼륨까지 한 번에 다듬습니다.</p>
+                </div>
+                <button type="button" id="btn-reset-beauty" class="chip-btn subtle">인물 초기화</button>
+              </div>
+              <div class="quick-combo-grid">
+                <button type="button" class="combo-btn" data-beauty-pack="cleanId">깨끗한 증명·프로필</button>
+                <button type="button" class="combo-btn" data-beauty-pack="dewyGlow">화사한 물광 여신</button>
+                <button type="button" class="combo-btn" data-beauty-pack="menNatural">남성 깔끔 피부·윤곽</button>
+                <button type="button" class="combo-btn" data-beauty-pack="youngFresh">다크·팔자 지우개 (동안)</button>
+              </div>
+            </div>
+
+            <!-- 1-1. 피부결 & 톤 & 유분기 -->
+            <div class="control-section">
+              <h3 class="section-heading">고급 피부결 · 유분기 · 홍조 정리</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-skinSmooth">주파수 분리 피부결 매끈하게 (모공·잡티 정돈)</label>
+                  <span class="slider-val" id="val-skinSmooth">0</span>
+                </div>
+                <input type="range" id="sl-skinSmooth" data-param="skinSmooth" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-skinBrighten">피부 백옥 톤업 (칙칙한 안색 화사하게)</label>
+                  <span class="slider-val" id="val-skinBrighten">0</span>
+                </div>
+                <input type="range" id="sl-skinBrighten" data-param="skinBrighten" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-shineRemove">얼굴 번들거림 · 기름기 제거 (보송한 매트 피부)</label>
+                  <span class="slider-val" id="val-shineRemove">0</span>
+                </div>
+                <input type="range" id="sl-shineRemove" data-param="shineRemove" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-skinRednessRemove">피부 붉은기 · 홍조 진정 (균일한 피부톤)</label>
+                  <span class="slider-val" id="val-skinRednessRemove">0</span>
+                </div>
+                <input type="range" id="sl-skinRednessRemove" data-param="skinRednessRemove" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-faceContour">3D 입체 윤곽 메이크업 (T존 하이라이트·턱 쉐딩)</label>
+                  <span class="slider-val" id="val-faceContour">0</span>
+                </div>
+                <input type="range" id="sl-faceContour" data-param="faceContour" min="0" max="100" step="1" value="0">
+              </div>
+            </div>
+
+            <!-- 1-2. 다크서클 · 팔자주름 · 목주름 · 이중턱 -->
+            <div class="control-section">
+              <h3 class="section-heading">다크서클 · 팔자주름 · 목주름 지우개</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-darkCircle">눈 밑 다크서클 · 눈밑지방 그늘 지우기</label>
+                  <span class="slider-val" id="val-darkCircle">0</span>
+                </div>
+                <input type="range" id="sl-darkCircle" data-param="darkCircle" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-nasolabialFold">팔자주름 · 입가 그늘 완화</label>
+                  <span class="slider-val" id="val-nasolabialFold">0</span>
+                </div>
+                <input type="range" id="sl-nasolabialFold" data-param="nasolabialFold" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-neckWrinkle">목주름 · 쇄골 그늘 매끈하게 완화</label>
+                  <span class="slider-val" id="val-neckWrinkle">0</span>
+                </div>
+                <input type="range" id="sl-neckWrinkle" data-param="neckWrinkle" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-doubleChin">턱 밑 이중턱 그늘 정리</label>
+                  <span class="slider-val" id="val-doubleChin">0</span>
+                </div>
+                <input type="range" id="sl-doubleChin" data-param="doubleChin" min="0" max="100" step="1" value="0">
+              </div>
+            </div>
+
+            <!-- 1-3. 눈빛 · 치아 미백 · 입술 생기 · 헤어 볼륨 -->
+            <div class="control-section">
+              <h3 class="section-heading">눈빛 · 치아 미백 · 입술 · 머리 볼륨</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-eyeBrighten">눈동자 · 흰자 맑고 초롱초롱하게 (안구 정화)</label>
+                  <span class="slider-val" id="val-eyeBrighten">0</span>
+                </div>
+                <input type="range" id="sl-eyeBrighten" data-param="eyeBrighten" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-teethWhiten">치아 미백 (누런 치아를 깨끗하고 하얗게)</label>
+                  <span class="slider-val" id="val-teethWhiten">0</span>
+                </div>
+                <input type="range" id="sl-teethWhiten" data-param="teethWhiten" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-lipTint">입술 생기 충전 (자연스러운 코랄·로즈 혈색)</label>
+                  <span class="slider-val" id="val-lipTint">0</span>
+                </div>
+                <input type="range" id="sl-lipTint" data-param="lipTint" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-hairVolume">정수리 뿌리 볼륨 살리기 (이보토 헤어뽕)</label>
+                  <span class="slider-val" id="val-hairVolume">0</span>
+                </div>
+                <input type="range" id="sl-hairVolume" data-param="hairVolume" min="-40" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-hairlineFill">빈 헤어라인 · M자 이마 촘촘하게 채우기</label>
+                  <span class="slider-val" id="val-hairlineFill">0</span>
+                </div>
+                <input type="range" id="sl-hairlineFill" data-param="hairlineFill" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-hairGloss">머릿결 윤기 · 엔젤링 선명도</label>
+                  <span class="slider-val" id="val-hairGloss">0</span>
+                </div>
+                <input type="range" id="sl-hairGloss" data-param="hairGloss" min="0" max="100" step="1" value="0">
+              </div>
+            </div>
+          </section>
+
+          <!-- 탭 2: 이보토 스타일 쉬운 슬라이더 리퀴파이 & 체형·의상 -->
+          <section id="panel-liquify-easy" role="tabpanel" aria-labelledby="tab-btn-liquify-easy" class="tool-panel hidden">
+            <div class="panel-intro-card">
+              <div class="intro-row">
+                <div>
+                  <h2 class="panel-title">이보토 스타일 슬라이더 리퀴파이 (얼굴·체형·옷주름)</h2>
+                  <p class="panel-desc">막대만 움직이면 얼굴 윤곽, 중안부 길이, 좌우 대칭, 눈코입 비율, 팔뚝·다리 길이, 옷 주름까지 정리됩니다.</p>
+                </div>
+              </div>
+              <div class="guide-controls-row">
+                <button type="button" id="btn-toggle-face-guide" class="chip-btn" aria-pressed="false">
+                  <span>얼굴 위치 가이드 보기</span>
+                </button>
+                <button type="button" id="btn-auto-detect-face" class="chip-btn">
+                  <span>얼굴 위치 자동 맞춤</span>
+                </button>
+                <button type="button" id="btn-reset-easy-liquify" class="chip-btn subtle">
+                  <span>리퀴파이 초기화</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 원클릭 윤곽 콤보 -->
+            <div class="control-section">
+              <h3 class="section-heading">원클릭 자동 윤곽 스타일</h3>
+              <div class="quick-combo-grid">
+                <button type="button" class="combo-btn" data-liquify-combo="natural">자연스러운 윤곽 정리</button>
+                <button type="button" class="combo-btn" data-liquify-combo="vline">아이돌 V라인+중안부축소</button>
+                <button type="button" class="combo-btn" data-liquify-combo="body">전신 황금비율+직각어깨</button>
+                <button type="button" class="combo-btn" data-liquify-combo="studio">증명사진 대칭·옷주름 정돈</button>
+              </div>
+            </div>
+
+            <!-- 얼굴 윤곽 & 비율 슬라이더 -->
+            <div class="control-section">
+              <h3 class="section-heading">얼굴형 · 대칭 · 중안부 비율</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-faceSlim">얼굴 작게 (소두 효과)</label>
+                  <span class="slider-val" id="val-faceSlim">0</span>
+                </div>
+                <input type="range" id="sl-faceSlim" data-param="faceSlim" min="-60" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-faceSymmetry">얼굴 좌우 비대칭 균형 맞추기</label>
+                  <span class="slider-val" id="val-faceSymmetry">0</span>
+                </div>
+                <input type="range" id="sl-faceSymmetry" data-param="faceSymmetry" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-vLine">턱선 갸름하게 (V라인)</label>
+                  <span class="slider-val" id="val-vLine">0</span>
+                </div>
+                <input type="range" id="sl-vLine" data-param="vLine" min="-60" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-cheekSlim">볼살 · 광대 매끈하게 넣기</label>
+                  <span class="slider-val" id="val-cheekSlim">0</span>
+                </div>
+                <input type="range" id="sl-cheekSlim" data-param="cheekSlim" min="-60" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-midfaceShorten">중안부 축소 (얼굴 중앙부 짧고 어려 보이게)</label>
+                  <span class="slider-val" id="val-midfaceShorten">0</span>
+                </div>
+                <input type="range" id="sl-midfaceShorten" data-param="midfaceShorten" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-foreheadHeight">이마 길이 · 볼륨 조절</label>
+                  <span class="slider-val" id="val-foreheadHeight">0</span>
+                </div>
+                <input type="range" id="sl-foreheadHeight" data-param="foreheadHeight" min="-60" max="60" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-chinLength">턱끝 길이 조절 (짧게 ↔ 길게)</label>
+                  <span class="slider-val" id="val-chinLength">0</span>
+                </div>
+                <input type="range" id="sl-chinLength" data-param="chinLength" min="-60" max="60" step="1" value="0">
+              </div>
+            </div>
+
+            <!-- 눈 · 코 · 입 정밀 성형 슬라이더 -->
+            <div class="control-section">
+              <h3 class="section-heading">눈 · 코 · 입 정밀 리퀴파이</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-eyeSize">눈 전체 크기 확대</label>
+                  <span class="slider-val" id="val-eyeSize">0</span>
+                </div>
+                <input type="range" id="sl-eyeSize" data-param="eyeSize" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-eyeWidth">눈 가로 트임 (시원한 눈매)</label>
+                  <span class="slider-val" id="val-eyeWidth">0</span>
+                </div>
+                <input type="range" id="sl-eyeWidth" data-param="eyeWidth" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-eyeDistance">미간 거리 조절 (모으기 ↔ 넓히기)</label>
+                  <span class="slider-val" id="val-eyeDistance">0</span>
+                </div>
+                <input type="range" id="sl-eyeDistance" data-param="eyeDistance" min="-60" max="60" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-eyeTilt">눈꼬리 각도 (순한 강아지눈 ↔ 시크한 고양이눈)</label>
+                  <span class="slider-val" id="val-eyeTilt">0</span>
+                </div>
+                <input type="range" id="sl-eyeTilt" data-param="eyeTilt" min="-60" max="60" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-noseSlim">코 날렵하게 (콧볼·콧망울 축소)</label>
+                  <span class="slider-val" id="val-noseSlim">0</span>
+                </div>
+                <input type="range" id="sl-noseSlim" data-param="noseSlim" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-lipPlump">입술 도톰하게 (오버립 볼륨)</label>
+                  <span class="slider-val" id="val-lipPlump">0</span>
+                </div>
+                <input type="range" id="sl-lipPlump" data-param="lipPlump" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-smileLift">입꼬리 자연스러운 미소 올리기</label>
+                  <span class="slider-val" id="val-smileLift">0</span>
+                </div>
+                <input type="range" id="sl-smileLift" data-param="smileLift" min="-50" max="100" step="1" value="0">
+              </div>
+            </div>
+
+            <!-- 체형 · 비율 · 의상 주름 슬라이더 -->
+            <div class="control-section">
+              <h3 class="section-heading">어깨 · 팔뚝 · 허리 · 다리 비율 & 옷 주름 제거</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-neckLengthen">승모근 내리기 · 목 길어 보이게</label>
+                  <span class="slider-val" id="val-neckLengthen">0</span>
+                </div>
+                <input type="range" id="sl-neckLengthen" data-param="neckLengthen" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-shoulderWidth">직각 어깨 · 어깨 너비 조절 (좁게 ↔ 넓게)</label>
+                  <span class="slider-val" id="val-shoulderWidth">0</span>
+                </div>
+                <input type="range" id="sl-shoulderWidth" data-param="shoulderWidth" min="-60" max="60" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-armSlim">팔뚝살 슬림하게 정리</label>
+                  <span class="slider-val" id="val-armSlim">0</span>
+                </div>
+                <input type="range" id="sl-armSlim" data-param="armSlim" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-waistSlim">허리 · 몸통 라인 잘록하게</label>
+                  <span class="slider-val" id="val-waistSlim">0</span>
+                </div>
+                <input type="range" id="sl-waistSlim" data-param="waistSlim" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-hipVolume">골반 · 힙 라인 볼륨감</label>
+                  <span class="slider-val" id="val-hipVolume">0</span>
+                </div>
+                <input type="range" id="sl-hipVolume" data-param="hipVolume" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-legLength">키 · 다리 길어 보이게 (하체 비율 연장)</label>
+                  <span class="slider-val" id="val-legLength">0</span>
+                </div>
+                <input type="range" id="sl-legLength" data-param="legLength" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-clothesDewrinkle">의상 주름 다림질 (셔츠·정장 구김 매끈하게 제거)</label>
+                  <span class="slider-val" id="val-clothesDewrinkle">0</span>
+                </div>
+                <input type="range" id="sl-clothesDewrinkle" data-param="clothesDewrinkle" min="0" max="100" step="1" value="0">
+              </div>
+            </div>
+          </section>
+
+          <!-- 탭 3: 터치/브러시 리퀴파이 & 잡티 콕 찍어 지우기 탭 -->
+          <section id="panel-liquify-touch" role="tabpanel" aria-labelledby="tab-btn-liquify-touch" class="tool-panel hidden">
+            <div class="panel-intro-card">
+              <h2 class="panel-title">터치 성형 브러시 & 잡티 콕 찍어 지우기</h2>
+              <p class="panel-desc">점·여드름을 콕 찍어 지우거나, 손가락·마우스로 사진 위를 쓱 밀어서 원하는 부위를 직접 성형합니다.</p>
+            </div>
+
+            <div class="control-section">
+              <h3 class="section-heading">터치 브러시 도구 선택 (7가지 모드)</h3>
+              <div class="brush-mode-grid">
+                <button type="button" class="brush-mode-btn active" data-brush-mode="push">
+                  <span class="mode-title">밀기 (윤곽 이동)</span>
+                  <span class="mode-sub">미는 방향대로 턱선·라인 정리</span>
+                </button>
+                <button type="button" class="brush-mode-btn" data-brush-mode="shrink">
+                  <span class="mode-title">줄이기 (오므리기)</span>
+                  <span class="mode-sub">터치한 부위를 갸름하고 작게</span>
+                </button>
+                <button type="button" class="brush-mode-btn" data-brush-mode="expand">
+                  <span class="mode-title">키우기 (볼륨 업)</span>
+                  <span class="mode-sub">눈 확대 · 정수리 머리 볼륨</span>
+                </button>
+                <button type="button" class="brush-mode-btn" data-brush-mode="spotHeal">
+                  <span class="mode-title">잡티·점 지우개 (콕 찍기)</span>
+                  <span class="mode-sub">여드름·점·먼지를 터치해 제거</span>
+                </button>
+                <button type="button" class="brush-mode-btn" data-brush-mode="restore">
+                  <span class="mode-title">성형 복구 브러시</span>
+                  <span class="mode-sub">문지른 부분만 원래대로 복원</span>
+                </button>
+                <button type="button" class="brush-mode-btn" data-brush-mode="freeze">
+                  <span class="mode-title">배경 보호 마스크</span>
+                  <span class="mode-sub">배경·직선이 휘지 않게 빨간 보호막 칠하기</span>
+                </button>
+                <button type="button" class="brush-mode-btn" data-brush-mode="thaw">
+                  <span class="mode-title">보호 마스크 지우개</span>
+                  <span class="mode-sub">칠해 둔 빨간 보호 영역 지우기</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3 class="section-heading">브러시 크기 및 강도</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-brushRadius">브러시 크기 (원 크기)</label>
+                  <span class="slider-val" id="val-brushRadius">65px</span>
+                </div>
+                <input type="range" id="sl-brushRadius" min="12" max="220" step="1" value="65">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-brushStrength">터치 밀기 강도</label>
+                  <span class="slider-val" id="val-brushStrength">55%</span>
+                </div>
+                <input type="range" id="sl-brushStrength" min="10" max="100" step="1" value="55">
+              </div>
+
+              <div class="touch-helper-row">
+                <button type="button" id="btn-toggle-grid" class="chip-btn" aria-pressed="false">
+                  <span>격자선(그리드) 표시</span>
+                </button>
+                <button type="button" id="btn-pan-mode" class="chip-btn" aria-pressed="false">
+                  <span>한 손가락 화면 이동 모드</span>
+                </button>
+                <button type="button" id="btn-clear-spots" class="chip-btn subtle">
+                  <span>잡티 지우개 초기화</span>
+                </button>
+                <button type="button" id="btn-clear-freeze" class="chip-btn subtle">
+                  <span>고정 마스크 해제</span>
+                </button>
+                <button type="button" id="btn-reset-brush" class="chip-btn subtle">
+                  <span>터치 성형 초기화</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 탭 4: 프리셋 탭 (30종 + 내 프리셋) -->
+          <section id="panel-presets" role="tabpanel" aria-labelledby="tab-btn-presets" class="tool-panel hidden">
+            <div class="panel-intro-card">
+              <h2 class="panel-title">이보토 감성 색감 & 윤곽 올인원 프리셋 (30종)</h2>
+              <p class="panel-desc">원하는 프리셋을 누르면 색감, 디헤이즈, 필름 입자, 인물 보정이 자동으로 조합됩니다.</p>
+
+              <div class="slider-item preset-intensity-box">
+                <div class="slider-header">
+                  <label for="sl-presetIntensity">적용된 프리셋 강도 조절</label>
+                  <span class="slider-val" id="val-presetIntensity">100%</span>
+                </div>
+                <input type="range" id="sl-presetIntensity" min="0" max="150" step="1" value="100">
+              </div>
+            </div>
+
+            <!-- 프리셋 카테고리 필터 -->
+            <div class="preset-categories" role="group" aria-label="프리셋 분류">
+              <button type="button" class="cat-pill active" data-preset-cat="all">전체 (30)</button>
+              <button type="button" class="cat-pill" data-preset-cat="portrait">인물·스튜디오</button>
+              <button type="button" class="cat-pill" data-preset-cat="film">필름·빈티지</button>
+              <button type="button" class="cat-pill" data-preset-cat="cinema">시네마틱·감성</button>
+              <button type="button" class="cat-pill" data-preset-cat="mono">흑백·모노</button>
+              <button type="button" class="cat-pill" data-preset-cat="liquify">이보토 성형+피부 올인원</button>
+              <button type="button" class="cat-pill" data-preset-cat="custom">내 프리셋</button>
+            </div>
+
+            <!-- 프리셋 카드 그리드 (JS에서 렌더링) -->
+            <div id="preset-grid" class="preset-grid" role="list"></div>
+
+            <!-- 나만의 프리셋 저장 -->
+            <div class="custom-preset-saver">
+              <input type="text" id="custom-preset-name" class="text-input" placeholder="나만의 프리셋 이름 (예: 내 스튜디오 인물톤)" maxlength="24">
+              <button type="button" id="btn-save-custom-preset" class="btn btn-secondary">내 프리셋 저장</button>
+            </div>
+          </section>
+
+          <!-- 탭 5: 색감 · 배경 · 구도 보정 탭 -->
+          <section id="panel-color" role="tabpanel" aria-labelledby="tab-btn-color" class="tool-panel hidden">
+            <div class="panel-intro-card">
+              <div class="intro-header-inline">
+                <div>
+                  <h2 class="panel-title">정밀 색감 · 스튜디오 배경 · 구도 보정</h2>
+                  <p class="panel-desc">색온도와 노출부터 스튜디오 배경지 정리, 아웃포커싱 블러, 증명사진 배경톤까지 조절합니다.</p>
+                </div>
+                <button type="button" id="btn-reset-color" class="chip-btn subtle">색감·배경 초기화</button>
+              </div>
+            </div>
+
+            <!-- 스튜디오 배경 정리 & 아웃포커싱 (이보토 배경 기능) -->
+            <div class="control-section highlight-box">
+              <h3 class="section-heading">이보토 스튜디오 배경 · 아웃포커싱</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-bgBlur">배경 아웃포커싱 (인물 돋보이는 렌즈 보케 블러)</label>
+                  <span class="slider-val" id="val-bgBlur">0</span>
+                </div>
+                <input type="range" id="sl-bgBlur" data-param="bgBlur" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-bgClean">호리존 배경지 깨끗하게 (배경 얼룩·구김 정돈)</label>
+                  <span class="slider-val" id="val-bgClean">0</span>
+                </div>
+                <input type="range" id="sl-bgClean" data-param="bgClean" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-bgTintStrength">배경 컬러 톤 변경 강도 (증명·프로필 배경색)</label>
+                  <span class="slider-val" id="val-bgTintStrength">0</span>
+                </div>
+                <input type="range" id="sl-bgTintStrength" data-param="bgTintStrength" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="quick-combo-grid">
+                <button type="button" class="combo-btn" data-bg-mode="none">원본 배경 유지</button>
+                <button type="button" class="combo-btn" data-bg-mode="white">순백색 화이트 스튜디오</button>
+                <button type="button" class="combo-btn" data-bg-mode="ivory">따뜻한 크림 아이보리</button>
+                <button type="button" class="combo-btn" data-bg-mode="coolgray">시크 쿨그레이 프로필</button>
+                <button type="button" class="combo-btn" data-bg-mode="skyblue">파스텔 스카이 블루</button>
+                <button type="button" class="combo-btn" data-bg-mode="charcoal">시네마 다크 차콜</button>
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3 class="section-heading">화이트밸런스 (온도 · 색조)</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-temperature">색온도 (차갑게 ↔ 따뜻하게)</label>
+                  <span class="slider-val" id="val-temperature">0</span>
+                </div>
+                <input type="range" id="sl-temperature" class="track-temp" data-param="temperature" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-tint">색조 (초록빛 ↔ 복숭아·핑크빛)</label>
+                  <span class="slider-val" id="val-tint">0</span>
+                </div>
+                <input type="range" id="sl-tint" class="track-tint" data-param="tint" min="-100" max="100" step="1" value="0">
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3 class="section-heading">밝기 및 명암 (라이트)</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-exposure">노출 (전체 밝기)</label>
+                  <span class="slider-val" id="val-exposure">0</span>
+                </div>
+                <input type="range" id="sl-exposure" data-param="exposure" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-contrast">대비 (명암 또렷함)</label>
+                  <span class="slider-val" id="val-contrast">0</span>
+                </div>
+                <input type="range" id="sl-contrast" data-param="contrast" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-highlights">밝은 영역 (하이라이트 복원)</label>
+                  <span class="slider-val" id="val-highlights">0</span>
+                </div>
+                <input type="range" id="sl-highlights" data-param="highlights" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-shadows">어두운 영역 (그림자 살리기)</label>
+                  <span class="slider-val" id="val-shadows">0</span>
+                </div>
+                <input type="range" id="sl-shadows" data-param="shadows" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-whites">흰색 계열 (화이트 포인트)</label>
+                  <span class="slider-val" id="val-whites">0</span>
+                </div>
+                <input type="range" id="sl-whites" data-param="whites" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-blacks">검정 계열 (암부 깊이감)</label>
+                  <span class="slider-val" id="val-blacks">0</span>
+                </div>
+                <input type="range" id="sl-blacks" data-param="blacks" min="-100" max="100" step="1" value="0">
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3 class="section-heading">생동감 · 채도 · 하늘/수풀 컬러 믹서</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-vibrance">생동감 (피부톤 보호 스마트 채도)</label>
+                  <span class="slider-val" id="val-vibrance">0</span>
+                </div>
+                <input type="range" id="sl-vibrance" data-param="vibrance" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-saturation">전체 채도 (색 진하기 ↔ 흑백)</label>
+                  <span class="slider-val" id="val-saturation">0</span>
+                </div>
+                <input type="range" id="sl-saturation" data-param="saturation" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-aquaBlueBoost">하늘 · 바다 청량감 (블루·아쿠아 색감 강화)</label>
+                  <span class="slider-val" id="val-aquaBlueBoost">0</span>
+                </div>
+                <input type="range" id="sl-aquaBlueBoost" data-param="aquaBlueBoost" min="-60" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-foliageGreen">나뭇잎 · 잔디 싱그러움 (필름 그린 색감)</label>
+                  <span class="slider-val" id="val-foliageGreen">0</span>
+                </div>
+                <input type="range" id="sl-foliageGreen" data-param="foliageGreen" min="-60" max="100" step="1" value="0">
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3 class="section-heading">컬러 그레이딩 (빛과 그림자 색감 입히기)</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-splitHighlightAmount">밝은 영역(하이라이트) 색감 강도</label>
+                  <span class="slider-val" id="val-splitHighlightAmount">0</span>
+                </div>
+                <input type="range" id="sl-splitHighlightAmount" data-param="splitHighlightAmount" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-splitHighlightHue">밝은 영역 색상 선택</label>
+                  <span class="slider-val" id="val-splitHighlightHue">42°</span>
+                </div>
+                <input type="range" id="sl-splitHighlightHue" class="track-hue" data-param="splitHighlightHue" min="0" max="360" step="1" value="42">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-splitShadowAmount">어두운 영역(그림자) 색감 강도</label>
+                  <span class="slider-val" id="val-splitShadowAmount">0</span>
+                </div>
+                <input type="range" id="sl-splitShadowAmount" data-param="splitShadowAmount" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-splitShadowHue">어두운 영역 색상 선택</label>
+                  <span class="slider-val" id="val-splitShadowHue">205°</span>
+                </div>
+                <input type="range" id="sl-splitShadowHue" class="track-hue" data-param="splitShadowHue" min="0" max="360" step="1" value="205">
+              </div>
+            </div>
+
+            <!-- 수평 회전 및 거울 반전 -->
+            <div class="control-section">
+              <h3 class="section-heading">수평 기울기 맞춤 · 거울 반전</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-straighten">수평 기울기 미세 회전 (-15° ~ +15°)</label>
+                  <span class="slider-val" id="val-straighten">0°</span>
+                </div>
+                <input type="range" id="sl-straighten" data-param="straighten" min="-15" max="15" step="0.5" value="0">
+              </div>
+
+              <div class="touch-helper-row">
+                <button type="button" id="btn-flip-h" class="chip-btn" aria-pressed="false">
+                  <span>좌우 거울 반전 (셀카 반전)</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 탭 6: 디헤이즈 · 필름그레인 · 할레이션 · 효과 탭 -->
+          <section id="panel-effects" role="tabpanel" aria-labelledby="tab-btn-effects" class="tool-panel hidden">
+            <div class="panel-intro-card">
+              <div class="intro-header-inline">
+                <div>
+                  <h2 class="panel-title">디헤이즈 · 필름 그레인 · 필름 빛번짐</h2>
+                  <p class="panel-desc">뿌연 안개·역광을 걷어내는 디헤이즈와 아날로그 필름 입자감, 소프트 글로우를 더합니다.</p>
+                </div>
+                <button type="button" id="btn-reset-effects" class="chip-btn subtle">효과 초기화</button>
+              </div>
+            </div>
+
+            <!-- 디헤이즈 섹션 -->
+            <div class="control-section highlight-box">
+              <h3 class="section-heading">디헤이즈 (안개 · 뿌연 역광 제거)</h3>
+              <p class="helper-note">오른쪽(+)으로 밀면 뿌연 안개·미세먼지·창문 빛 반사를 걷어내어 또렷하게 만들고, 왼쪽(-)으로 밀면 몽환적인 안개 효과를 줍니다.</p>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-dehaze">디헤이즈 강도</label>
+                  <span class="slider-val" id="val-dehaze">0</span>
+                </div>
+                <input type="range" id="sl-dehaze" data-param="dehaze" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="quick-combo-grid">
+                <button type="button" class="combo-btn" data-dehaze-quick="0">원래대로 (0)</button>
+                <button type="button" class="combo-btn" data-dehaze-quick="35">자연스러운 역광 보정 (+35)</button>
+                <button type="button" class="combo-btn" data-dehaze-quick="70">강력 안개·흐림 제거 (+70)</button>
+                <button type="button" class="combo-btn" data-dehaze-quick="-30">몽환적 안개 필터 (-30)</button>
+              </div>
+            </div>
+
+            <!-- 필름 그레인 섹션 -->
+            <div class="control-section highlight-box">
+              <h3 class="section-heading">필름 그레인 (아날로그 필름 입자)</h3>
+              <p class="helper-note">디지털 사진 특유의 차가운 느낌을 줄이고, 실제 필름 인화지 같은 감성적인 은입자 질감을 입힙니다.</p>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-grainAmount">필름 그레인 양 (입자 강도)</label>
+                  <span class="slider-val" id="val-grainAmount">0</span>
+                </div>
+                <input type="range" id="sl-grainAmount" data-param="grainAmount" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-grainSize">필름 입자 크기 (고운 입자 ↔ 굵은 입자)</label>
+                  <span class="slider-val" id="val-grainSize">1.4</span>
+                </div>
+                <input type="range" id="sl-grainSize" data-param="grainSize" min="1" max="3" step="0.1" value="1.4">
+              </div>
+
+              <div class="quick-combo-grid">
+                <button type="button" class="combo-btn" data-grain-quick="none">입자 끄기</button>
+                <button type="button" class="combo-btn" data-grain-quick="fine">고운 스튜디오 필름</button>
+                <button type="button" class="combo-btn" data-grain-quick="cinema">35mm 시네마 필름</button>
+                <button type="button" class="combo-btn" data-grain-quick="rough">거친 빈티지 입자</button>
+              </div>
+            </div>
+
+            <!-- 디테일 · 할레이션 · 비네팅 · 페이드 -->
+            <div class="control-section">
+              <h3 class="section-heading">필름 할레이션 · 선명도 · 비네팅 · 페이드</h3>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-halation">필름 할레이션 · 소프트 글로우 (하이라이트 감성 빛번짐)</label>
+                  <span class="slider-val" id="val-halation">0</span>
+                </div>
+                <input type="range" id="sl-halation" data-param="halation" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-clarity">클래리티 (윤곽 입체감 강조)</label>
+                  <span class="slider-val" id="val-clarity">0</span>
+                </div>
+                <input type="range" id="sl-clarity" data-param="clarity" min="-50" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-sharpness">샤프닝 (눈매 · 머리카락 선명하게)</label>
+                  <span class="slider-val" id="val-sharpness">0</span>
+                </div>
+                <input type="range" id="sl-sharpness" data-param="sharpness" min="0" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-vignette">비네팅 (가장자리 어둡게 ↔ 화사하게)</label>
+                  <span class="slider-val" id="val-vignette">0</span>
+                </div>
+                <input type="range" id="sl-vignette" data-param="vignette" min="-100" max="100" step="1" value="0">
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-header">
+                  <label for="sl-fade">필름 매트 페이드 (어두운 영역 감성 들뜸)</label>
+                  <span class="slider-val" id="val-fade">0</span>
+                </div>
+                <input type="range" id="sl-fade" data-param="fade" min="0" max="100" step="1" value="0">
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- 이보토 스타일 보정 수치 선택 복사 / 텍스트 코드 공유 모달 -->
+  <div id="modal-copy-sync" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="copy-sync-title">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2 id="copy-sync-title">이보토 스타일 보정 수치 복사 · 붙여넣기 설정</h2>
+        <button type="button" id="btn-copy-sync-close" class="modal-close-btn" aria-label="닫기">&times;</button>
+      </div>
+      <div class="modal-content">
+        <p class="modal-lead">원하는 보정 항목만 골라서 다른 사진에 붙여넣거나, 아래 수치 코드를 복사해 스마트폰·PC 사이에서 그대로 주고받을 수 있습니다.</p>
+
+        <div class="copy-check-grid">
+          <label class="check-card">
+            <input type="checkbox" id="chk-copy-beauty" checked>
+            <span>인물 피부·주름·치아·헤어 수치</span>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" id="chk-copy-liquify" checked>
+            <span>쉬운 리퀴파이 (얼굴·체형·옷주름)</span>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" id="chk-copy-color" checked>
+            <span>색감·밝기·스튜디오 배경 수치</span>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" id="chk-copy-effects" checked>
+            <span>디헤이즈·필름 그레인·효과 수치</span>
+          </label>
+        </div>
+
+        <div class="export-field">
+          <label for="settings-code-textarea">보정 수치 텍스트 코드 (카톡·메모장으로 복사해 어디서든 붙여넣기 가능)</label>
+          <textarea id="settings-code-textarea" class="code-textarea" rows="4" placeholder="수치 복사 버튼을 누르면 여기에 현재 보정 코드가 표시됩니다. 다른 기기에서 받은 코드를 여기에 붙여넣고 [코드 적용하기]를 누르세요."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="btn-apply-code-text" class="btn btn-primary btn-large">
+            <span>위 텍스트 코드 현재 사진에 적용하기</span>
+          </button>
+          <button type="button" id="btn-copy-code-clipboard" class="btn btn-secondary btn-large">
+            <span>클립보드에 보정 수치 코드 복사하기</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JPEG 내보내기 모달 -->
+  <div id="modal-export" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="export-modal-title">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2 id="export-modal-title">고화질 JPEG 사진 내보내기</h2>
+        <button type="button" id="btn-export-close" class="modal-close-btn" aria-label="닫기">&times;</button>
+      </div>
+      <div class="modal-content">
+        <p class="modal-lead">보정된 인물 피부, 리퀴파이 윤곽, 색감, 디헤이즈, 필름 그레인을 모두 합쳐 표준 JPEG(.jpg) 사진 파일로 저장합니다.</p>
+
+        <div class="export-field">
+          <label for="export-filename">저장할 파일 이름</label>
+          <div class="filename-input-row">
+            <input type="text" id="export-filename" class="text-input" value="EvotoLite_보정본">
+            <span class="ext-badge">.jpg</span>
+          </div>
+        </div>
+
+        <div class="export-field">
+          <label for="export-scale">사진 크기 (해상도 선택)</label>
+          <select id="export-scale" class="select-full">
+            <option value="original" selected>원본 해상도 그대로 저장 (최고 화질 추천)</option>
+            <option value="2048">인스타그램 · SNS 업로드 최적화 (긴 변 2048px)</option>
+            <option value="1280">카카오톡 · 블로그 빠른 전송용 (긴 변 1280px)</option>
+          </select>
+        </div>
+
+        <div class="export-field">
+          <div class="slider-header">
+            <label for="export-quality">JPEG 화질 (품질 설정)</label>
+            <span class="slider-val" id="val-export-quality">95% (초고화질)</span>
+          </div>
+          <input type="range" id="export-quality" min="60" max="100" step="1" value="95">
+        </div>
+
+        <div class="export-summary-card">
+          <div class="summary-row">
+            <span>출력 형식</span>
+            <span>JPEG 표준 이미지 (.jpg)</span>
+          </div>
+          <div class="summary-row">
+            <span>출력 해상도</span>
+            <span id="export-resolution-info">900 x 1125 px</span>
+          </div>
+          <div class="summary-row">
+            <span>예상 파일 크기</span>
+            <span id="export-size-info">계산 중...</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="btn-export-download" class="btn btn-primary btn-large">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <span>현재 사진 JPEG 다운로드 (.jpg)</span>
+          </button>
+          <button type="button" id="btn-export-batch" class="btn btn-secondary btn-large">
+            <span>목록의 모든 사진 한꺼번에 JPEG 저장 (일괄 내보내기)</span>
+          </button>
+          <button type="button" id="btn-export-share" class="btn btn-secondary btn-large">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+            <span>스마트폰 공유 / 사진첩·카톡 보내기</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스마트폰 연결 안내 모달 -->
+  <div id="modal-mobile" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="mobile-modal-title">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2 id="mobile-modal-title">스마트폰에서 바로 쓰는 방법 (평생 바로가기)</h2>
+        <button type="button" id="btn-mobile-close" class="modal-close-btn" aria-label="닫기">&times;</button>
+      </div>
+      <div class="modal-content">
+        <p class="modal-lead">스마트폰 인터넷 창(크롬·삼성인터넷·사파리)에서 아래 주소를 열거나, 단독 실행 파일을 내려받아 홈 화면에 추가해 두면 앞으로도 언제든 폰에서 바로 켤 수 있습니다.</p>
+
+        <div class="wifi-address-box" id="wifi-address-list">
+          <div class="wifi-url-item">http://192.168.219.106:3080 (집·작업실 공유기)</div>
+          <div class="wifi-url-item">http://192.168.1.17:3080 (와이파이)</div>
+          <div class="wifi-url-item">http://100.96.88.70:3080 (Tailscale 원격)</div>
+        </div>
+
+        <ol class="guide-steps">
+          <li>스마트폰 브라우저에서 위 주소로 접속한 뒤 메뉴의 홈 화면에 추가(앱 설치)를 누르면 스마트폰 바탕화면에 EvotoLite 앱 아이콘이 생깁니다.</li>
+          <li>또는 아래 버튼으로 폰 전용 단독 파일(EvotoLite-Mobile.html)을 카카오톡 나와의 채팅 등으로 보내 두면, 컴퓨터가 꺼져 있을 때도 폰에서 파일만 눌러 평생 바로 켤 수 있습니다.</li>
+        </ol>
+
+        <div class="modal-actions">
+          <a href="/download-single" download="EvotoLite-Mobile.html" class="btn btn-primary btn-large" style="text-decoration:none;">
+            <span>폰 평생 소장용 단독 앱 파일 내려받기 (EvotoLite-Mobile.html)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

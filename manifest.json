@@ -1,0 +1,24 @@
+{
+  "name": "EvotoLite - 쉬운 리퀴파이 & 감성 색감 보정 스튜디오",
+  "short_name": "EvotoLite",
+  "description": "이보토처럼 쉬운 슬라이더·터치 리퀴파이, 26종 감성 프리셋, 디헤이즈, 필름 그레인, 고화질 JPEG 내보내기를 지원하는 스마트폰·PC 겸용 사진 보정 앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1116",
+  "theme_color": "#0f1116",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='42' fill='%230f1116'/><circle cx='96' cy='96' r='68' stroke='%23ff7a59' stroke-width='10' fill='none'/><circle cx='96' cy='96' r='32' fill='%23ff7a59'/><circle cx='122' cy='70' r='10' fill='%23ffd166'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%230f1116'/><circle cx='256' cy='256' r='180' stroke='%23ff7a59' stroke-width='24' fill='none'/><circle cx='256' cy='256' r='86' fill='%23ff7a59'/><circle cx='328' cy='184' r='26' fill='%23ffd166'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
